@@ -36,7 +36,7 @@ func (p *parser) parse(t DNSType, c DNSClass, rdata []byte) interface{} {
 	}
 
 	// Internet-specific types.
-	if c == IN {
+	if c == IN || c == ANYCLASS {
 		switch t {
 		case A:
 			return p.parseA(rdata)

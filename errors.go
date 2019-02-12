@@ -41,7 +41,7 @@ var ErrNotAResponse = errors.New("the message the server sent us isn't a respons
 
 // ErrNotIN means that the lookup can only be performed with the DNS class IN
 // (e.g. A, AAAA).
-var ErrNotIN = errors.New("class must be IN (Internet)")
+var ErrNotIN = errors.New("class must be IN (Internet) (or ANYCLASS (*), which includes IN)")
 
 // ErrNotStandardQuery means that the server responded with an OPCODE header
 // that isn't a standard query, which is the only value currently supported.

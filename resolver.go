@@ -27,7 +27,7 @@ func (r *Resolver) lookup(fqdn string, t DNSType, c DNSClass) ([]answer, error) 
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers, or if the resolver's class isn't IN.
 func (r *Resolver) LookupA(fqdn string) (recs []*ARecord, ttls []uint32, err error) {
-	if r.Class != IN {
+	if r.Class != IN && r.Class != ANYCLASS {
 		err = ErrNotIN
 		return
 	}
@@ -55,7 +55,7 @@ func (r *Resolver) LookupA(fqdn string) (recs []*ARecord, ttls []uint32, err err
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers, or if the resolver's class isn't IN.
 func (r *Resolver) LookupAAAA(fqdn string) (recs []*AAAARecord, ttls []uint32, err error) {
-	if r.Class != IN {
+	if r.Class != IN && r.Class != ANYCLASS {
 		err = ErrNotIN
 		return
 	}
