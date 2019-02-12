@@ -23,6 +23,7 @@ func (r *Resolver) lookup(fqdn string, t DNSType, c DNSClass) ([]answer, error) 
 }
 
 // LookupA performs a DoH lookup on A records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers, or if the resolver's class isn't IN.
 func (r *Resolver) LookupA(fqdn string) (recs []*ARecord, ttls []uint32, err error) {
@@ -50,6 +51,7 @@ func (r *Resolver) LookupA(fqdn string) (recs []*ARecord, ttls []uint32, err err
 }
 
 // LookupAAAA performs a DoH lookup on AAAA records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers, or if the resolver's class isn't IN.
 func (r *Resolver) LookupAAAA(fqdn string) (recs []*AAAARecord, ttls []uint32, err error) {
@@ -77,6 +79,7 @@ func (r *Resolver) LookupAAAA(fqdn string) (recs []*AAAARecord, ttls []uint32, e
 }
 
 // LookupCNAME performs a DoH lookup on CNAME records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers.
 func (r *Resolver) LookupCNAME(fqdn string) (recs []*CNAMERecord, ttls []uint32, err error) {
@@ -99,6 +102,7 @@ func (r *Resolver) LookupCNAME(fqdn string) (recs []*CNAMERecord, ttls []uint32,
 }
 
 // LookupMX performs a DoH lookup on CNAME records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers.
 func (r *Resolver) LookupMX(fqdn string) (recs []*MXRecord, ttls []uint32, err error) {
@@ -121,6 +125,7 @@ func (r *Resolver) LookupMX(fqdn string) (recs []*MXRecord, ttls []uint32, err e
 }
 
 // LookupNS performs a DoH lookup on CNAME records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers.
 func (r *Resolver) LookupNS(fqdn string) (recs []*NSRecord, ttls []uint32, err error) {
@@ -143,6 +148,7 @@ func (r *Resolver) LookupNS(fqdn string) (recs []*NSRecord, ttls []uint32, err e
 }
 
 // LookupTXT performs a DoH lookup on TXT records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers.
 func (r *Resolver) LookupTXT(fqdn string) (recs []*TXTRecord, ttls []uint32, err error) {
@@ -165,6 +171,7 @@ func (r *Resolver) LookupTXT(fqdn string) (recs []*TXTRecord, ttls []uint32, err
 }
 
 // LookupSRV performs a DoH lookup on SRV records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers.
 func (r *Resolver) LookupSRV(fqdn string) (recs []*SRVRecord, ttls []uint32, err error) {
@@ -190,6 +197,7 @@ func (r *Resolver) LookupSRV(fqdn string) (recs []*SRVRecord, ttls []uint32, err
 // network and domain. network's value is expected to be in the likes of "udp",
 // "tcp" and so on. Under the hood, it builds a FQDN of the form
 // _service._network.domain and calls r.LookupSRV with it.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers.
 func (r *Resolver) LookupService(service, network, domain string) (recs []*SRVRecord, ttls []uint32, err error) {
@@ -197,6 +205,7 @@ func (r *Resolver) LookupService(service, network, domain string) (recs []*SRVRe
 }
 
 // LookupSOA performs a DoH lookup on SOA records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers.
 func (r *Resolver) LookupSOA(fqdn string) (recs []*SOARecord, ttls []uint32, err error) {
