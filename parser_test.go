@@ -2,6 +2,8 @@ package doh
 
 import (
 	"encoding/base64"
+	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -37,6 +39,33 @@ const expectedPTR = "aragog.brendanabolivier.com"
 const name = "CWFib2xpdmllcgNiemgA"
 const expectedName = "abolivier.bzh"
 const expectedOffset = 15
+
+func TestParseFlow(t *testing.T) {
+	testParseType(t, rdataA, "A", A)
+	testParseType(t, rdataAAAA, "AAAA", AAAA)
+	testParseType(t, rdataCNAME, "CNAME", CNAME)
+	testParseType(t, rdataMX, "MX", MX)
+	testParseType(t, rdataSRV, "SRV", SRV)
+	testParseType(t, rdataNS, "NS", NS)
+	testParseType(t, rdataTXT, "TXT", TXT)
+	testParseType(t, rdataSOA, "SOA", SOA)
+	testParseType(t, rdataPTR, "PTR", PTR)
+}
+
+func testParseType(t *testing.T, b64, expectedType string, recordType DNSType) {
+	rdata, err := base64.RawStdEncoding.DecodeString(b64)
+	if err != nil {
+		t.FailNow()
+	}
+
+	p := new(parser)
+	parsed := p.parse(recordType, ANYCLASS, rdata)
+
+	expected := fmt.Sprintf("*doh.%sRecord", expectedType)
+	if reflect.TypeOf(parsed).String() != expected {
+		t.Fail()
+	}
+}
 
 func TestParseA(t *testing.T) {
 	rdata, err := base64.RawStdEncoding.DecodeString(rdataA)
