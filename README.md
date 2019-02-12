@@ -21,10 +21,10 @@ It implements looking up the following records:
 * SOA
 * PTR
 
-It also currently doesn't other query types than standard query, nor support for
-truncated messages. Full compliance, at least with [RFC
+It also currently doesn't implement other query types than standard query, nor
+support for truncated messages. Full compliance, at least with [RFC
 1035](https://tools.ietf.org/html/rfc1035), is something I'd like, though, so
-all of that should come in the future..
+all of that should come in the future.
 
 ## Usage
 
