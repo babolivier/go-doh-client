@@ -17,7 +17,7 @@ looking up the following records:
 * SRV
 * SOA
 
-More will come in the future (such as SOA and AXFR).
+More will come in the future (such as PTR and AXFR).
 
 It also currently doesn't other query types than standard query, nor support for
 truncated messages. Full compliance, at least with [RFC
@@ -70,3 +70,15 @@ I'm interested in quite a lot for privacy reasons and because of how harder it
 is to censor than classic DNS, so I decided to give it a go. And also because my
 definition of "having fun during holidays" obviously involves implementing part
 of the DNS RFC.
+
+## Contribute
+
+Contributions are more than welcome. I tried to make this library as friendly to
+hack on as possible, especially when the said hack aims to implement support for
+a new DNS record type.
+[Here](https://github.com/babolivier/go-doh-client/commit/e64451280e70778bf8d95ea1f23e86d047a80222)'s
+an example of how to do so, which is the exhaustive changeset for the
+implementation of SOA records.
+
+And of course, if you have any issue or feedback you want to report on, feel
+free to [open an issue](https://github.com/babolivier/go-doh-client/issues/new).
