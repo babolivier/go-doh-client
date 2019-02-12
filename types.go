@@ -38,7 +38,7 @@ const (
 	CH = 3
 	// HS implements the DNS Hesiod class.
 	HS = 4
-	// ANYCLASS implements the DNS ANYCLASS QCLASS.
+	// ANYCLASS implements the DNS * QCLASS.
 	ANYCLASS = 255
 )
 
