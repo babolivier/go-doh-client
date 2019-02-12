@@ -1,0 +1,11 @@
+language: go
+
+go:
+  - 1.11.x
+
+script:
+  - GOOS=linux go build
+  - GOOS=darwin go build
+  - GOOS=freebsd go build
+
+  - go test -v -race
