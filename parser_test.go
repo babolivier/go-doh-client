@@ -50,6 +50,10 @@ func TestParseFlow(t *testing.T) {
 	testParseType(t, rdataTXT, "TXT", TXT)
 	testParseType(t, rdataSOA, "SOA", SOA)
 	testParseType(t, rdataPTR, "PTR", PTR)
+	// Test that parse returns nil on unknown record type.
+	// We don't care about which rdata we feed this one with, since parse isn't
+	// expected to feed that rdata to an actual parsing function.
+	testParseType(t, rdataA, "", 0)
 }
 
 func testParseType(t *testing.T, b64, expectedType string, recordType DNSType) {
@@ -61,9 +65,15 @@ func testParseType(t *testing.T, b64, expectedType string, recordType DNSType) {
 	p := new(parser)
 	parsed := p.parse(recordType, ANYCLASS, rdata)
 
-	expected := fmt.Sprintf("*doh.%sRecord", expectedType)
-	if reflect.TypeOf(parsed).String() != expected {
-		t.Fail()
+	if len(expectedType) > 0 {
+		expected := fmt.Sprintf("*doh.%sRecord", expectedType)
+		if reflect.TypeOf(parsed).String() != expected {
+			t.Fail()
+		}
+	} else {
+		if reflect.TypeOf(parsed) != nil {
+			t.Fail()
+		}
 	}
 }
 
