@@ -190,6 +190,7 @@ func (p *parser) parseTXT(rdata []byte) *TXTRecord {
 	return txt
 }
 
+// parseSOA parses SOA records.
 func (p *parser) parseSOA(rdata []byte) *SOARecord {
 	/*
 		                               1  1  1  1  1  1
