@@ -1,5 +1,7 @@
 # go-doh-client
 
+[![Build Status](https://travis-ci.org/babolivier/go-doh-client.svg?branch=master)](https://travis-ci.org/babolivier/go-doh-client) [![GoDoc](https://godoc.org/github.com/babolivier/go-doh-client?status.svg)](https://godoc.org/github.com/babolivier/go-doh-client) [![Go Report Card](https://goreportcard.com/badge/github.com/babolivier/go-doh-client)](https://goreportcard.com/report/github.com/babolivier/go-doh-client)
+
 This is a Go implementation of a DNS over HTTPS
 ([RFC8484](https://tools.ietf.org/html/rfc8484)) client library.
 
