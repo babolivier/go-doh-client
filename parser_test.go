@@ -75,7 +75,12 @@ func TestParseMX(t *testing.T) {
 
 	p := new(parser)
 	rec := p.parseMX(rdata)
-	if rec.Host != expectedMXHost || rec.Pref != expectedMXPref {
+
+	if rec.Host != expectedMXHost {
+		t.Fail()
+	}
+
+	if rec.Pref != expectedMXPref {
 		t.Fail()
 	}
 }
@@ -88,7 +93,19 @@ func TestParseSRV(t *testing.T) {
 
 	p := new(parser)
 	rec := p.parseSRV(rdata)
-	if rec.Priority != expectedSRVPriority || rec.Weight != expectedSRVWeight || rec.Port != expectedSRVPort || rec.Target != expectedSRVTarget {
+	if rec.Priority != expectedSRVPriority {
+		t.Fail()
+	}
+
+	if rec.Weight != expectedSRVWeight {
+		t.Fail()
+	}
+
+	if rec.Port != expectedSRVPort {
+		t.Fail()
+	}
+
+	if rec.Target != expectedSRVTarget {
 		t.Fail()
 	}
 }
