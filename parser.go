@@ -33,6 +33,8 @@ func (p *parser) parse(t DNSType, c DNSClass, rdata []byte) interface{} {
 		return p.parseTXT(rdata)
 	case SOA:
 		return p.parseSOA(rdata)
+	case PTR:
+		return p.parsePTR(rdata)
 	}
 
 	// Internet-specific types.
@@ -234,6 +236,22 @@ func (p *parser) parseSOA(rdata []byte) *SOARecord {
 	soa.Minimum = binary.BigEndian.Uint32(rdata[16:20])
 
 	return soa
+}
+
+// parsePTR parses PTR records.
+func (p *parser) parsePTR(rdata []byte) *PTRRecord {
+	/*
+		                               1  1  1  1  1  1
+		 0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		/                   PTRDNAME                    /
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+	*/
+
+	ptr := new(PTRRecord)
+	ptr.PTR, _ = p.parseName(rdata)
+
+	return ptr
 }
 
 // parseName parses a domain name as described in the QNAME definition of

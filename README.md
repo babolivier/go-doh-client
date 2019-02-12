@@ -5,8 +5,11 @@
 This is a Go client library implementation of DNS over HTTPS
 ([RFC8484](https://tools.ietf.org/html/rfc8484)).
 
-It doesn't currently implement all of the DNS specifications. It implements
-looking up the following records:
+## Compliance with DNS specifications
+
+This client library doesn't currently implement all of the DNS specifications.
+
+It implements looking up the following records:
 
 * A
 * AAAA
@@ -16,8 +19,7 @@ looking up the following records:
 * TXT
 * SRV
 * SOA
-
-More will come in the future (such as PTR and AXFR).
+* PTR
 
 It also currently doesn't other query types than standard query, nor support for
 truncated messages. Full compliance, at least with [RFC

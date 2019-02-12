@@ -16,6 +16,8 @@ const (
 	CNAME = 5
 	// SOA implements the DNS SOA type.
 	SOA = 6
+	// PTR implements the DNS PTR type.
+	PTR = 12
 	// MX implements the DNS MX type.
 	MX = 15
 	// TXT implements the DNS TXT type.
@@ -71,6 +73,11 @@ type SOARecord struct {
 	Retry       int32
 	Expire      int32
 	Minimum     uint32
+}
+
+// PTRRecord implements the DNS PTR record.
+type PTRRecord struct {
+	PTR string
 }
 
 // MXRecord implements the DNS MX record.

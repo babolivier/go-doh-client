@@ -226,3 +226,26 @@ func (r *Resolver) LookupSOA(fqdn string) (recs []*SOARecord, ttls []uint32, err
 
 	return
 }
+
+// LookupPTR performs a DoH lookup on PTR records for the given FQDN.
+// Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
+// Returns an error if something went wrong at the network level, or when
+// parsing the response headers.
+func (r *Resolver) LookupPTR(fqdn string) (recs []*PTRRecord, ttls []uint32, err error) {
+	answers, err := r.lookup(fqdn, PTR, IN)
+	if err != nil {
+		return
+	}
+
+	recs = make([]*PTRRecord, 0)
+	ttls = make([]uint32, 0)
+
+	for _, a := range answers {
+		if a.t == PTR {
+			recs = append(recs, a.parsed.(*PTRRecord))
+			ttls = append(ttls, a.ttl)
+		}
+	}
+
+	return
+}

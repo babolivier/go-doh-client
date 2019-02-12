@@ -32,6 +32,8 @@ const expectedSOARefresh = 86400
 const expectedSOARetry = 3600
 const expectedSOAExpire = 3600000
 const expectedSOAMinimum = 300
+const rdataPTR = "BmFyYWdvZxBicmVuZGFuYWJvbGl2aWVyA2NvbQA"
+const expectedPTR = "aragog.brendanabolivier.com"
 const name = "CWFib2xpdmllcgNiemgA"
 const expectedName = "abolivier.bzh"
 const expectedOffset = 15
@@ -170,6 +172,19 @@ func TestParseSOA(t *testing.T) {
 	}
 
 	if rec.Retry != expectedSOARetry {
+		t.Fail()
+	}
+}
+
+func TestParsePTR(t *testing.T) {
+	rdata, err := base64.RawStdEncoding.DecodeString(rdataPTR)
+	if err != nil {
+		t.FailNow()
+	}
+
+	p := new(parser)
+	rec := p.parsePTR(rdata)
+	if rec.PTR != expectedPTR {
 		t.Fail()
 	}
 }
