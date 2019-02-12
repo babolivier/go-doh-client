@@ -31,5 +31,10 @@ func exchangeHTTPS(q []byte, resolver string) (a []byte, err error) {
 
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		err = fmt.Errorf("HTTPS server returned with non-OK code %d", resp.StatusCode)
+		return
+	}
+
 	return ioutil.ReadAll(resp.Body)
 }
