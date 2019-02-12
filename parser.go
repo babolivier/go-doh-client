@@ -31,6 +31,8 @@ func (p *parser) parse(t DNSType, c DNSClass, rdata []byte) interface{} {
 		return p.parseNS(rdata)
 	case TXT:
 		return p.parseTXT(rdata)
+	case SOA:
+		return p.parseSOA(rdata)
 	}
 
 	// Internet-specific types.
@@ -186,6 +188,51 @@ func (p *parser) parseTXT(rdata []byte) *TXTRecord {
 	txt.TXT = string(rdata[1 : length+1])
 
 	return txt
+}
+
+func (p *parser) parseSOA(rdata []byte) *SOARecord {
+	/*
+		                               1  1  1  1  1  1
+		 0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		/                     MNAME                     /
+		/                                               /
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		/                     RNAME                     /
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		|                    SERIAL                     |
+		|                                               |
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		|                    REFRESH                    |
+		|                                               |
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		|                     RETRY                     |
+		|                                               |
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		|                    EXPIRE                     |
+		|                                               |
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		|                    MINIMUM                    |
+		|                                               |
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+	*/
+
+	var offset int
+
+	soa := new(SOARecord)
+	soa.PrimaryNS, offset = p.parseName(rdata)
+	rdata = rdata[offset:]
+
+	soa.RespMailbox, offset = p.parseName(rdata)
+	rdata = rdata[offset:]
+
+	soa.Serial = binary.BigEndian.Uint32(rdata[0:4])
+	soa.Refresh = int32(binary.BigEndian.Uint32(rdata[4:8]))
+	soa.Retry = int32(binary.BigEndian.Uint32(rdata[8:12]))
+	soa.Expire = int32(binary.BigEndian.Uint32(rdata[12:16]))
+	soa.Minimum = binary.BigEndian.Uint32(rdata[16:20])
+
+	return soa
 }
 
 // parseName parses a domain name as described in the QNAME definition of

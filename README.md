@@ -15,6 +15,7 @@ looking up the following records:
 * NS
 * TXT
 * SRV
+* SOA
 
 More will come in the future (such as SOA and AXFR).
 

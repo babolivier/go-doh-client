@@ -14,6 +14,8 @@ const (
 	NS = 2
 	// CNAME implements the DNS CNAME type.
 	CNAME = 5
+	// SOA implements the DNS SOA type.
+	SOA = 6
 	// MX implements the DNS MX type.
 	MX = 15
 	// TXT implements the DNS TXT type.
@@ -58,6 +60,17 @@ type CNAMERecord struct {
 // TXTRecord implements the DNS TXT record.
 type TXTRecord struct {
 	TXT string
+}
+
+// SOARecord implements the DNS SOA record.
+type SOARecord struct {
+	PrimaryNS   string
+	RespMailbox string
+	Serial      uint32
+	Refresh     int32
+	Retry       int32
+	Expire      int32
+	Minimum     uint32
 }
 
 // MXRecord implements the DNS MX record.

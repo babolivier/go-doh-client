@@ -24,6 +24,14 @@ const rdataNS = "BW5zMjAwB2FueWNhc3QCbWUA"
 const expectedNSHost = "ns200.anycast.me"
 const rdataTXT = "HzR8aHR0cHM6Ly9icmVuZGFuLmFib2xpdmllci5iemg"
 const expectedTXT = "4|https://brendan.abolivier.bzh"
+const rdataSOA = "BmRuczIwMAdhbnljYXN0Am1lAAR0ZWNoA292aANuZXQAeFfPoAABUYAAAA4QADbugAAAASw"
+const expectedSOAPrimaryNS = "dns200.anycast.me"
+const expectedSOARespMailbox = "tech.ovh.net"
+const expectedSOASerial = 2019020704
+const expectedSOARefresh = 86400
+const expectedSOARetry = 3600
+const expectedSOAExpire = 3600000
+const expectedSOAMinimum = 300
 const name = "CWFib2xpdmllcgNiemgA"
 const expectedName = "abolivier.bzh"
 const expectedOffset = 15
@@ -132,6 +140,36 @@ func TestParseTXT(t *testing.T) {
 	p := new(parser)
 	rec := p.parseTXT(rdata)
 	if rec.TXT != expectedTXT {
+		t.Fail()
+	}
+}
+
+func TestParseSOA(t *testing.T) {
+	rdata, err := base64.RawStdEncoding.DecodeString(rdataSOA)
+	if err != nil {
+		t.FailNow()
+	}
+
+	p := new(parser)
+	rec := p.parseSOA(rdata)
+
+	if rec.PrimaryNS != expectedSOAPrimaryNS {
+		t.Fail()
+	}
+
+	if rec.RespMailbox != expectedSOARespMailbox {
+		t.Fail()
+	}
+
+	if rec.Serial != expectedSOASerial {
+		t.Fail()
+	}
+
+	if rec.Refresh != expectedSOARefresh {
+		t.Fail()
+	}
+
+	if rec.Retry != expectedSOARetry {
 		t.Fail()
 	}
 }
