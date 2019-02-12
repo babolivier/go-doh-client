@@ -37,12 +37,6 @@ const notImplemented = "79SBlAABAAQAAAABB2JyZW5kYW4JYWJvbGl2aWVyA2J6aAAAAQABwAwA
 // This message contains the same payload as above, but with RCODE = 5 (refused).
 const refused = "nHWBlQABAAQAAAABB2JyZW5kYW4JYWJvbGl2aWVyA2J6aAAAAQABwAwABQABAAAOEAAHBGJsb2fADMAzAAUAAQAADhAAGwRibG9nEGJyZW5kYW5hYm9saXZpZXIDY29tAMBGAAUAAQABUYAACQZhcmFnb2fAS8BtAAEAAQAABwgABDMmL78AACkFrAAAAAAAAA"
 
-func TestDummy(t *testing.T) {
-	r := Resolver{Host: "1.1.1.1", Class: IN}
-
-	r.LookupA("brendan.abolivier.bzh")
-}
-
 func TestValidHeaders(t *testing.T) {
 	res, err := base64.RawStdEncoding.DecodeString(validResponse)
 	if err != nil {
