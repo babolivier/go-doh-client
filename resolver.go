@@ -1,6 +1,8 @@
 // Package doh implements client operations for DoH (DNS over HTTPS) lookups.
 package doh
 
+import "net/http"
+
 // Resolver handles lookups.
 type Resolver struct {
 	// The host to send DoH requests to.
@@ -8,6 +10,8 @@ type Resolver struct {
 	// The DNS class to lookup with, must be one of IN, CS, CH, HS or ANYCLASS.
 	// As a hint, the most used class nowadays is IN (Internet).
 	Class DNSClass
+	// HttpClient is a http.Client used to connect to DoH server
+	HTTPClient *http.Client
 }
 
 // lookup encodes a DNS query, sends it over HTTPS then parses the response.
@@ -15,7 +19,7 @@ type Resolver struct {
 // parsing the response headers.
 func (r *Resolver) lookup(fqdn string, t DNSType, c DNSClass) ([]answer, error) {
 	q := encodeQuery(fqdn, t, c)
-	res, err := exchangeHTTPS(q, r.Host)
+	res, err := r.exchangeHTTPS(q)
 	if err != nil {
 		return nil, err
 	}
