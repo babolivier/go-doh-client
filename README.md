@@ -60,7 +60,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	println(a[0].Target) // matrix.example.com
+	println(srv[0].Target) // matrix.example.com
 }
 ```
 
