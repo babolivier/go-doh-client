@@ -50,3 +50,7 @@ var ErrNotStandardQuery = errors.New("only standard queries are supported")
 // ErrTruncated means that the message is truncated, which isn't currently
 // supported.
 var ErrTruncated = errors.New("truncated messages aren't supported")
+
+// ErrCorrupted means that the message sent back by the server is either empty,
+// incomplete, or corrupted.
+var ErrCorrupted = errors.New("the message the server sent is empty, incomplete, or corrupted message")
