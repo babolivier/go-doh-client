@@ -53,4 +53,4 @@ var ErrTruncated = errors.New("truncated messages aren't supported")
 
 // ErrCorrupted means that the message sent back by the server is either empty,
 // incomplete, or corrupted.
-var ErrCorrupted = errors.New("the message the server sent is empty, incomplete, or corrupted message")
+var ErrCorrupted = errors.New("the message the server sent is empty, incomplete, or corrupted")
