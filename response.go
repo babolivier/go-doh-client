@@ -95,7 +95,7 @@ func parseResponse(res []byte) ([]answer, error) {
 			|                     QCLASS                    |
 			+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 		*/
-		if len(buf) < 0 {
+		if len(buf) == 0 {
 			return nil, ErrCorrupted
 		}
 		_, offset := p.parseName(buf)
@@ -138,7 +138,7 @@ func parseResponse(res []byte) ([]answer, error) {
 			+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 		*/
 
-		if len(buf) < 0 {
+		if len(buf) == 0 {
 			return nil, ErrCorrupted
 		}
 		name, offset := p.parseName(buf)
@@ -150,9 +150,6 @@ func parseResponse(res []byte) ([]answer, error) {
 
 		// Set buffer value for next occurrence.
 		buf = buf[offset+10+int(rdlength):]
-		if len(buf) < 0 {
-			return nil, ErrCorrupted
-		}
 
 		// Parse the answer.
 		parsed := p.parse(t, class, rdata)

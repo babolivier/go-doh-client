@@ -37,6 +37,12 @@ const notImplemented = "79SBlAABAAQAAAABB2JyZW5kYW4JYWJvbGl2aWVyA2J6aAAAAQABwAwA
 // This message contains the same payload as above, but with RCODE = 5 (refused).
 const refused = "nHWBlQABAAQAAAABB2JyZW5kYW4JYWJvbGl2aWVyA2J6aAAAAQABwAwABQABAAAOEAAHBGJsb2fADMAzAAUAAQAADhAAGwRibG9nEGJyZW5kYW5hYm9saXZpZXIDY29tAMBGAAUAAQABUYAACQZhcmFnb2fAS8BtAAEAAQAABwgABDMmL78AACkFrAAAAAAAAA"
 
+// This message contains an empty payload.
+const empty = ""
+
+// This messages contains a message header, but no corresponding resource records.
+const noRecords = "V8yBkAABAAEAAAAA"
+
 func TestValidHeaders(t *testing.T) {
 	res, err := base64.RawStdEncoding.DecodeString(validResponse)
 	if err != nil {
@@ -166,6 +172,22 @@ func TestRefused(t *testing.T) {
 	}
 
 	if _, err = parseResponse(res); err == nil || err != ErrRefused {
+		t.Fail()
+	}
+}
+
+func TestEmpty(t *testing.T) {
+	if _, err := parseResponse([]byte(empty)); err == nil || err != ErrCorrupted {
+		t.Fail()
+	}
+}
+
+func TestCorrupted(t *testing.T) {
+	res, err := base64.RawStdEncoding.DecodeString(noRecords)
+	if err != nil {
+		t.FailNow()
+	}
+	if _, err := parseResponse(res); err == nil || err != ErrCorrupted {
 		t.Fail()
 	}
 }
