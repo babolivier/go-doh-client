@@ -22,6 +22,10 @@ func parseResponse(res []byte) ([]answer, error) {
 	p := new(parser)
 	p.res = res
 
+	if len(res) < DNSMsgHeaderLen {
+		return nil, ErrCorrupted
+	}
+
 	/*
 		DNS HEADER
 
@@ -72,7 +76,7 @@ func parseResponse(res []byte) ([]answer, error) {
 	ancount := binary.BigEndian.Uint16(res[6:8])
 
 	// Get to the very first byte after decoding headers.
-	buf := res[12:]
+	buf := res[DNSMsgHeaderLen:]
 	var i uint16
 	for i = 0; i < qdcount; i++ {
 		/*
@@ -91,6 +95,9 @@ func parseResponse(res []byte) ([]answer, error) {
 			|                     QCLASS                    |
 			+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 		*/
+		if len(buf) == 0 {
+			return nil, ErrCorrupted
+		}
 		_, offset := p.parseName(buf)
 		buf = buf[offset+4:]
 	}
@@ -131,6 +138,9 @@ func parseResponse(res []byte) ([]answer, error) {
 			+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 		*/
 
+		if len(buf) == 0 {
+			return nil, ErrCorrupted
+		}
 		name, offset := p.parseName(buf)
 		t := DNSType(binary.BigEndian.Uint16(buf[offset : offset+2]))
 		class := DNSClass(binary.BigEndian.Uint16(buf[offset+2 : offset+4]))
