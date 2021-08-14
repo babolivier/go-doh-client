@@ -2,6 +2,7 @@ package doh
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -11,11 +12,11 @@ import (
 // request as described in RFC 8484, and returns the response's body.
 // Returns an error if there was an issue sending the request or reading the
 // response body.
-func (r *Resolver) exchangeHTTPS(q []byte) (a []byte, err error) {
+func (r *Resolver) exchangeHTTPS(ctx context.Context, q []byte) (a []byte, err error) {
 	url := fmt.Sprintf("https://%s/dns-query", r.Host)
 	body := bytes.NewBuffer(q)
 
-	req, err := http.NewRequest("POST", url, body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, body)
 	if err != nil {
 		return
 	}
