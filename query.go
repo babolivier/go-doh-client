@@ -2,19 +2,24 @@ package doh
 
 import (
 	"bytes"
+	"crypto/rand"
 	"encoding/binary"
-	"math/rand"
+	"math"
+	"math/big"
 	"strings"
-	"time"
 )
 
 // encodeQuery creates a DNS query message from the given fqdn, type and class.
-func encodeQuery(fqdn string, t DNSType, c DNSClass) []byte {
+func encodeQuery(fqdn string, t DNSType, c DNSClass) ([]byte, error) {
 	q := bytes.NewBuffer(nil)
 
 	reqID := []byte{0, 0}
-	r := rand.New(rand.NewSource(time.Now().Unix()))
-	binary.BigEndian.PutUint16(reqID, uint16(r.Int31()))
+	i, err := rand.Int(rand.Reader, big.NewInt(int64(math.MaxUint16)))
+	if err != nil {
+		return nil, err
+	}
+
+	binary.BigEndian.PutUint16(reqID, uint16(i.Uint64()))
 
 	/*
 		DNS HEADER
@@ -88,5 +93,5 @@ func encodeQuery(fqdn string, t DNSType, c DNSClass) []byte {
 	q.Write(qtype)
 	q.Write(qclass)
 
-	return q.Bytes()
+	return q.Bytes(), nil
 }

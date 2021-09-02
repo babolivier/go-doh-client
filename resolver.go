@@ -21,7 +21,10 @@ type Resolver struct {
 // Returns an error if something went wrong at the network level, or when
 // parsing the response headers.
 func (r *Resolver) lookup(ctx context.Context, fqdn string, t DNSType, c DNSClass) ([]answer, error) {
-	q := encodeQuery(fqdn, t, c)
+	q, err := encodeQuery(fqdn, t, c)
+	if err != nil {
+		return nil, err
+	}
 	res, err := r.exchangeHTTPS(ctx, q)
 	if err != nil {
 		return nil, err

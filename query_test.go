@@ -9,7 +9,12 @@ import (
 const queryEncodedB64 = "ARAAAQAAAAAAAAdicmVuZGFuCWFib2xpdmllcgNiemgAAAEAAQ"
 
 func TestEncodeQuery(t *testing.T) {
-	q := encodeQuery("brendan.abolivier.bzh", A, IN)
+	q, err := encodeQuery("brendan.abolivier.bzh", A, IN)
+
+	if err != nil {
+		t.Errorf("encodeQuery() err = %v", err)
+		return
+	}
 
 	// Don't check the randomly generated ID.
 	q = q[2:]
