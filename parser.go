@@ -27,6 +27,8 @@ func (p *parser) parse(t DNSType, c DNSClass, rdata []byte) interface{} {
 		return p.parseMX(rdata)
 	case SRV:
 		return p.parseSRV(rdata)
+	case URI:
+		return p.parseURI(rdata)
 	case NS:
 		return p.parseNS(rdata)
 	case TXT:
@@ -154,6 +156,26 @@ func (p *parser) parseSRV(rdata []byte) *SRVRecord {
 	srv.Weight = binary.BigEndian.Uint16(rdata[2:4])
 	srv.Port = binary.BigEndian.Uint16(rdata[4:6])
 	srv.Target, _ = p.parseName(rdata[6:])
+	return srv
+}
+
+// parseURI parses URI records.
+func (p *parser) parseURI(rdata []byte) *URIRecord {
+	/*
+		                               1  1  1  1  1  1
+		 0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		|                   PRIORITY                    |
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		|                    WEIGHT                     |
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+		|                    TARGET                     |
+		+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+	*/
+	srv := new(URIRecord)
+	srv.Priority = binary.BigEndian.Uint16(rdata[0:2])
+	srv.Weight = binary.BigEndian.Uint16(rdata[2:4])
+	srv.Target = string(rdata[4:])
 	return srv
 }
 

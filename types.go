@@ -26,6 +26,8 @@ const (
 	AAAA = 28
 	// SRV implements the DNS SRV type.
 	SRV = 33
+	// SRV implements the DNS SRV type.
+	URI = 256
 )
 
 // DNSClass implements DNS classes.
@@ -85,6 +87,13 @@ type MXRecord net.MX
 
 // SRVRecord implements the DNS SRV record.
 type SRVRecord net.SRV
+
+// URIRecord implements the DNS URI record.
+type URIRecord struct {
+	Target   string
+	Priority uint16
+	Weight   uint16
+}
 
 // NSRecord implements the DNS NS record.
 type NSRecord net.NS

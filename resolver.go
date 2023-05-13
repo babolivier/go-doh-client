@@ -208,6 +208,25 @@ func (r *Resolver) LookupService(service, network, domain string) (recs []*SRVRe
 	return r.LookupSRV("_" + service + "._" + network + "." + domain)
 }
 
+func (r *Resolver) LookupURI(fqdn string) (recs []*URIRecord, ttls []uint32, err error) {
+	answers, err := r.lookup(fqdn, URI, IN)
+	if err != nil {
+		return
+	}
+
+	recs = make([]*URIRecord, 0)
+	ttls = make([]uint32, 0)
+
+	for _, a := range answers {
+		if a.t == URI {
+			recs = append(recs, a.parsed.(*URIRecord))
+			ttls = append(ttls, a.ttl)
+		}
+	}
+
+	return
+}
+
 // LookupSOA performs a DoH lookup on SOA records for the given FQDN.
 // Returns records and TTLs such that ttls[0] is the TTL for recs[0], and so on.
 // Returns an error if something went wrong at the network level, or when

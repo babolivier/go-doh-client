@@ -22,6 +22,10 @@ const expectedSRVPriority = 10
 const expectedSRVWeight = 0
 const expectedSRVPort = 8448
 const expectedSRVTarget = "chat.abolivier.bzh"
+const rdataURI = "AAoAAGh0dHBzOi8vaGhzZGQuY29t"
+const expectedURIPriority = 10
+const expectedURIWeight = 0
+const expectedURITarget = "https://hhsdd.com"
 const rdataNS = "BW5zMjAwB2FueWNhc3QCbWUA"
 const expectedNSHost = "ns200.anycast.me"
 const rdataTXT = "HzR8aHR0cHM6Ly9icmVuZGFuLmFib2xpdmllci5iemg"
@@ -46,6 +50,7 @@ func TestParseFlow(t *testing.T) {
 	testParseType(t, rdataCNAME, "CNAME", CNAME)
 	testParseType(t, rdataMX, "MX", MX)
 	testParseType(t, rdataSRV, "SRV", SRV)
+	testParseType(t, rdataURI, "URI", URI)
 	testParseType(t, rdataNS, "NS", NS)
 	testParseType(t, rdataTXT, "TXT", TXT)
 	testParseType(t, rdataSOA, "SOA", SOA)
@@ -155,6 +160,27 @@ func TestParseSRV(t *testing.T) {
 	}
 
 	if rec.Target != expectedSRVTarget {
+		t.Fail()
+	}
+}
+
+func TestParseURI(t *testing.T) {
+	rdata, err := base64.RawStdEncoding.DecodeString(rdataURI)
+	if err != nil {
+		t.FailNow()
+	}
+
+	p := new(parser)
+	rec := p.parseURI(rdata)
+	if rec.Priority != expectedURIPriority {
+		t.Fail()
+	}
+
+	if rec.Weight != expectedURIWeight {
+		t.Fail()
+	}
+
+	if rec.Target != expectedURITarget {
 		t.Fail()
 	}
 }
